@@ -8,25 +8,33 @@
 <body>
 
 <!-- ===== 메인 화면 ===== -->
-<div id="main-screen" class="main-screen">
+<div id="main-screen" class="main-screen moving-bg">
   <h1 id="rainbow-title">색깔 구분 게임</h1>
   <button id="start-btn" class="start-btn">게임 시작</button>
 </div>
 
-<!-- ===== 실제 게임 화면 ===== -->
+<!-- ===== 게임 화면 ===== -->
 <div id="game-screen" class="hidden">
+
+  <!-- 배경음악 -->
+  <audio id="bgm" loop>
+    <source src="bgm.mp3" type="audio/mp3">
+  </audio>
+
+  <button id="music-toggle" class="music-btn">🔊</button>
 
   <div class="container">
 
-    <!-- 좌측 광고 영역 -->
+    <!-- 좌측 광고 -->
     <div class="left-panel">
       <h2>광고</h2>
-      <div class="ad-box">AD SPACE</div>
+      <img id="ad-img" class="ad-box" src="ad1.jpg">
     </div>
 
     <!-- 게임 영역 -->
     <div class="game-panel">
       <h1>색깔 구분 게임</h1>
+
       <div id="word-box">준비하세요...</div>
 
       <div class="btn-group">
@@ -40,7 +48,7 @@
       <div id="score">점수: 0</div>
     </div>
 
-    <!-- 우측 랭킹 영역 -->
+    <!-- 우측 랭킹 -->
     <div class="right-panel">
       <h2>랭킹 TOP 10</h2>
       <ol id="ranking-list"></ol>
@@ -49,7 +57,7 @@
   </div>
 </div>
 
-<!-- 닉네임 입력 팝업 -->
+<!-- 닉네임 팝업 -->
 <div id="nickname-modal" class="modal hidden">
   <div class="modal-content">
     <h3>점수를 랭킹에 등록할까요?</h3>
