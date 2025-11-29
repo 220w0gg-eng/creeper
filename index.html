@@ -8,7 +8,7 @@
 <body>
 
 <!-- ===== 메인 화면 ===== -->
-<div id="main-screen" class="screen">
+<div id="main-screen" class="main-screen">
   <h1 id="rainbow-title">색깔 구분 게임</h1>
   <button id="start-btn" class="start-btn">게임 시작</button>
 </div>
@@ -16,38 +16,37 @@
 <!-- ===== 실제 게임 화면 ===== -->
 <div id="game-screen" class="hidden">
 
-<div class="container">
+  <div class="container">
 
-  <!-- 좌측 광고 영역 -->
-  <div class="left-panel">
-    <h2>광고</h2>
-    <div class="ad-box">AD SPACE</div>
-  </div>
-
-  <!-- 게임 영역 -->
-  <div class="game-panel">
-    <h1>색깔 구분 게임</h1>
-    <div id="word-box">준비하세요...</div>
-
-    <div class="btn-group">
-      <button class="color-btn" data-color="red">빨간색</button>
-      <button class="color-btn" data-color="blue">파란색</button>
-      <button class="color-btn" data-color="green">초록색</button>
-      <button class="color-btn" data-color="yellow">노란색</button>
+    <!-- 좌측 광고 영역 -->
+    <div class="left-panel">
+      <h2>광고</h2>
+      <div class="ad-box">AD SPACE</div>
     </div>
 
-    <div id="timer">남은 시간: 0초</div>
-    <div id="score">점수: 0</div>
+    <!-- 게임 영역 -->
+    <div class="game-panel">
+      <h1>색깔 구분 게임</h1>
+      <div id="word-box">준비하세요...</div>
+
+      <div class="btn-group">
+        <button class="color-btn" data-color="red">빨간색</button>
+        <button class="color-btn" data-color="blue">파란색</button>
+        <button class="color-btn" data-color="green">초록색</button>
+        <button class="color-btn" data-color="yellow">노란색</button>
+      </div>
+
+      <div id="timer">남은 시간: 0초</div>
+      <div id="score">점수: 0</div>
+    </div>
+
+    <!-- 우측 랭킹 영역 -->
+    <div class="right-panel">
+      <h2>랭킹 TOP 10</h2>
+      <ol id="ranking-list"></ol>
+    </div>
+
   </div>
-
-  <!-- 우측 랭킹 영역 -->
-  <div class="right-panel">
-    <h2>랭킹 TOP 10</h2>
-    <ol id="ranking-list"></ol>
-  </div>
-
-</div>
-
 </div>
 
 <!-- 닉네임 입력 팝업 -->
