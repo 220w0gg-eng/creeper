@@ -7,6 +7,15 @@
 </head>
 <body>
 
+<!-- ===== 메인 화면 ===== -->
+<div id="main-screen" class="screen">
+  <h1 id="rainbow-title">색깔 구분 게임</h1>
+  <button id="start-btn" class="start-btn">게임 시작</button>
+</div>
+
+<!-- ===== 실제 게임 화면 ===== -->
+<div id="game-screen" class="hidden">
+
 <div class="container">
 
   <!-- 좌측 광고 영역 -->
@@ -18,7 +27,6 @@
   <!-- 게임 영역 -->
   <div class="game-panel">
     <h1>색깔 구분 게임</h1>
-
     <div id="word-box">준비하세요...</div>
 
     <div class="btn-group">
@@ -30,7 +38,6 @@
 
     <div id="timer">남은 시간: 0초</div>
     <div id="score">점수: 0</div>
-
   </div>
 
   <!-- 우측 랭킹 영역 -->
@@ -38,6 +45,8 @@
     <h2>랭킹 TOP 10</h2>
     <ol id="ranking-list"></ol>
   </div>
+
+</div>
 
 </div>
 
