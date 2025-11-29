@@ -1,139 +1,148 @@
-body {
-  margin: 0;
-  background: #111;
-  color: white;
-  font-family: 'Noto Sans KR', sans-serif;
+// 요소 선택
+const mainScreen = document.getElementById("main-screen");
+const gameScreen = document.getElementById("game-screen");
+const startBtn = document.getElementById("start-btn");
+
+const wordBox = document.getElementById("word-box");
+const timerBox = document.getElementById("timer");
+const scoreBox = document.getElementById("score");
+const rankingList = document.getElementById("ranking-list");
+
+const modal = document.getElementById("nickname-modal");
+const nicknameInput = document.getElementById("nickname-input");
+const saveScoreBtn = document.getElementById("save-score-btn");
+const cancelBtn = document.getElementById("cancel-btn");
+
+const adImg = document.getElementById("ad-img");
+const bgm = document.getElementById("bgm");
+const musicBtn = document.getElementById("music-toggle");
+
+let musicOn = false;
+
+const adList = ["ad1.jpg", "ad2.jpg", "ad3.jpg"];
+let adIndex = 0;
+
+// 광고 변경
+setInterval(() => {
+  adIndex = (adIndex + 1) % adList.length;
+  adImg.src = adList[adIndex];
+}, 3000);
+
+// 게임 데이터
+const colors = ["red", "blue", "green", "yellow"];
+const colorNames = {
+  red: "빨간색",
+  blue: "파란색",
+  green: "초록색",
+  yellow: "노란색"
+};
+
+let currentColor = "";
+let displayColor = "";
+let score = 0;
+let timeLimit = 2000;
+let timer = null;
+
+/* 게임 시작 버튼 */
+startBtn.addEventListener("click", () => {
+  mainScreen.classList.add("hidden");
+  gameScreen.classList.remove("hidden");
+
+  resetGame();
+  loadRanking();
+  startRound();
+
+  bgm.play();
+  musicOn = true;
+  musicBtn.textContent = "🔊";
+});
+
+/* 라운드 시작 */
+function startRound() {
+  clearTimeout(timer);
+
+  currentColor = colors[Math.floor(Math.random() * colors.length)];
+  displayColor = colors[Math.floor(Math.random() * colors.length)];
+
+  wordBox.textContent = colorNames[currentColor];
+  wordBox.style.color = displayColor;
+
+  timerBox.textContent = `남은 시간: ${(timeLimit / 1000).toFixed(1)}초`;
+
+  timer = setTimeout(() => endGame(), timeLimit);
 }
 
-.hidden {
-  display: none !important;
+/* 버튼 클릭 */
+document.querySelectorAll(".color-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    if (btn.dataset.color === displayColor) {
+      score++;
+      scoreBox.textContent = `점수: ${score}`;
+      if (timeLimit > 600) timeLimit -= 100;
+      startRound();
+    } else {
+      endGame();
+    }
+  });
+});
+
+/* 게임 종료 → 팝업 */
+function endGame() {
+  clearTimeout(timer);
+  modal.classList.add("show");
 }
 
-/* 메인 화면 중앙 정렬 */
-.main-screen {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+/* 점수 저장 */
+saveScoreBtn.addEventListener("click", () => {
+  const nick = nicknameInput.value || "익명";
+  nicknameInput.value = "";
+
+  let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+  ranking.push({ name: nick, score });
+  ranking.sort((a, b) => b.score - a.score);
+  ranking = ranking.slice(0, 10);
+  localStorage.setItem("ranking", JSON.stringify(ranking));
+
+  modal.classList.remove("show");
+  resetGame();
+  loadRanking();
+  startRound();
+});
+
+/* 취소 → 새 게임 */
+cancelBtn.addEventListener("click", () => {
+  modal.classList.remove("show");
+  resetGame();
+  startRound();
+});
+
+/* 리셋 */
+function resetGame() {
+  score = 0;
+  timeLimit = 2000;
+  scoreBox.textContent = "점수: 0";
 }
 
-/* 무지개 텍스트 */
-#rainbow-title {
-  font-size: 60px;
-  margin-bottom: 40px;
-  font-weight: bold;
-  background: linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet);
-  -webkit-background-clip: text;
-  color: transparent;
-  background-size: 400%;
-  animation: rainbow 4s infinite alternate;
+/* 랭킹 출력 */
+function loadRanking() {
+  rankingList.innerHTML = "";
+  const ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+
+  ranking.forEach((item, i) => {
+    const li = document.createElement("li");
+    li.textContent = `${i + 1}등 - ${item.name} : ${item.score}점`;
+    rankingList.appendChild(li);
+  });
 }
 
-@keyframes rainbow {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
-}
-
-.start-btn {
-  padding: 15px 40px;
-  font-size: 28px;
-  background: #333;
-  border: none;
-  color: white;
-  border-radius: 15px;
-  cursor: pointer;
-}
-
-/* 게임 화면 */
-.container {
-  display: flex;
-  height: 100vh;
-}
-
-.left-panel, .right-panel {
-  width: 20%;
-  padding: 20px;
-  background: #222;
-  text-align: center;
-}
-
-.ad-box {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-top: 20px;
-}
-
-.game-panel {
-  width: 60%;
-  text-align: center;
-  padding-top: 40px;
-}
-
-#word-box {
-  font-size: 48px;
-  margin-top: 50px;
-  margin-bottom: 40px;
-  height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.color-btn {
-  padding: 15px 25px;
-  margin: 10px;
-  font-size: 22px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-}
-
-.music-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: #444;
-  border: none;
-  padding: 10px 15px;
-  font-size: 22px;
-  color: white;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-/* 팝업 (초기에는 display:none!) */
-.modal {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: none;  /* 🔥 처음에는 숨김 */
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-.modal.show {
-  display: flex;  /* 🔥 show 클래스가 붙을 때만 보임 */
-}
-
-.modal-content {
-  background: #333;
-  padding: 30px;
-  border-radius: 12px;
-  width: 300px;
-  text-align: center;
-}
-
-.modal-content input {
-  padding: 10px;
-  width: 80%;
-  border-radius: 8px;
-  border: none;
-  margin-bottom: 20px;
-}
+/* 음악 토글 */
+musicBtn.addEventListener("click", () => {
+  if (musicOn) {
+    bgm.pause();
+    musicBtn.textContent = "🔇";
+  } else {
+    bgm.play();
+    musicBtn.textContent = "🔊";
+  }
+  musicOn = !musicOn;
+});
