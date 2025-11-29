@@ -22,13 +22,11 @@ let musicOn = false;
 const adList = ["ad1.jpg", "ad2.jpg", "ad3.jpg"];
 let adIndex = 0;
 
-// 광고 변경
 setInterval(() => {
   adIndex = (adIndex + 1) % adList.length;
   adImg.src = adList[adIndex];
 }, 3000);
 
-// 게임 데이터
 const colors = ["red", "blue", "green", "yellow"];
 const colorNames = {
   red: "빨간색",
@@ -41,9 +39,9 @@ let currentColor = "";
 let displayColor = "";
 let score = 0;
 let timeLimit = 2000;
+timeLimit = Number(timeLimit);
 let timer = null;
 
-/* 게임 시작 버튼 */
 startBtn.addEventListener("click", () => {
   mainScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
@@ -57,7 +55,6 @@ startBtn.addEventListener("click", () => {
   musicBtn.textContent = "🔊";
 });
 
-/* 라운드 시작 */
 function startRound() {
   clearTimeout(timer);
 
@@ -69,16 +66,15 @@ function startRound() {
 
   timerBox.textContent = `남은 시간: ${(timeLimit / 1000).toFixed(1)}초`;
 
-  timer = setTimeout(() => endGame(), timeLimit);
+  timer = setTimeout(() => endGame(), Number(timeLimit));
 }
 
-/* 버튼 클릭 */
 document.querySelectorAll(".color-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     if (btn.dataset.color === displayColor) {
       score++;
       scoreBox.textContent = `점수: ${score}`;
-      if (timeLimit > 600) timeLimit -= 100;
+      if (timeLimit > 600) timeLimit = Number(timeLimit) - 100;
       startRound();
     } else {
       endGame();
@@ -86,13 +82,11 @@ document.querySelectorAll(".color-btn").forEach(btn => {
   });
 });
 
-/* 게임 종료 → 팝업 */
 function endGame() {
   clearTimeout(timer);
   modal.classList.add("show");
 }
 
-/* 점수 저장 */
 saveScoreBtn.addEventListener("click", () => {
   const nick = nicknameInput.value || "익명";
   nicknameInput.value = "";
@@ -109,24 +103,22 @@ saveScoreBtn.addEventListener("click", () => {
   startRound();
 });
 
-/* 취소 → 새 게임 */
 cancelBtn.addEventListener("click", () => {
   modal.classList.remove("show");
   resetGame();
   startRound();
 });
 
-/* 리셋 */
 function resetGame() {
   score = 0;
   timeLimit = 2000;
+  timeLimit = Number(timeLimit);
   scoreBox.textContent = "점수: 0";
 }
 
-/* 랭킹 출력 */
 function loadRanking() {
   rankingList.innerHTML = "";
-  const ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+  let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
 
   ranking.forEach((item, i) => {
     const li = document.createElement("li");
@@ -135,7 +127,6 @@ function loadRanking() {
   });
 }
 
-/* 음악 토글 */
 musicBtn.addEventListener("click", () => {
   if (musicOn) {
     bgm.pause();
