@@ -2,39 +2,37 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>색깔 구분 반응 게임</title>
+  <title>색깔 구분 게임</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<!-- ===== 메인 화면 ===== -->
-<div id="main-screen" class="main-screen moving-bg">
+<!-- 메인 화면 -->
+<div id="main-screen" class="main-screen">
   <h1 id="rainbow-title">색깔 구분 게임</h1>
   <button id="start-btn" class="start-btn">게임 시작</button>
 </div>
 
-<!-- ===== 게임 화면 ===== -->
+<!-- 게임 화면 -->
 <div id="game-screen" class="hidden">
-
-  <!-- 배경음악 -->
+  
+  <!-- 음악 -->
   <audio id="bgm" loop>
     <source src="bgm.mp3" type="audio/mp3">
   </audio>
-
   <button id="music-toggle" class="music-btn">🔊</button>
 
   <div class="container">
 
-    <!-- 좌측 광고 -->
+    <!-- 좌 -->
     <div class="left-panel">
       <h2>광고</h2>
       <img id="ad-img" class="ad-box" src="ad1.jpg">
     </div>
 
-    <!-- 게임 영역 -->
+    <!-- 게임 -->
     <div class="game-panel">
       <h1>색깔 구분 게임</h1>
-
       <div id="word-box">준비하세요...</div>
 
       <div class="btn-group">
@@ -48,7 +46,7 @@
       <div id="score">점수: 0</div>
     </div>
 
-    <!-- 우측 랭킹 -->
+    <!-- 우 -->
     <div class="right-panel">
       <h2>랭킹 TOP 10</h2>
       <ol id="ranking-list"></ol>
@@ -57,7 +55,7 @@
   </div>
 </div>
 
-<!-- 닉네임 팝업 -->
+<!-- 팝업 -->
 <div id="nickname-modal" class="modal hidden">
   <div class="modal-content">
     <h3>점수를 랭킹에 등록할까요?</h3>
