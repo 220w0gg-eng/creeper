@@ -45,6 +45,8 @@ let timer = null;
 
 /* 게임 시작 버튼 */
 startBtn.addEventListener("click", () => {
+  console.log("게임 시작 버튼 클릭됨");
+
   mainScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
 
@@ -72,7 +74,7 @@ function startRound() {
   timer = setTimeout(() => endGame(), timeLimit);
 }
 
-/* 버튼 클릭 */
+/* 정답 체크 */
 document.querySelectorAll(".color-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     if (btn.dataset.color === displayColor) {
@@ -92,6 +94,13 @@ function endGame() {
   modal.classList.remove("hidden");
 }
 
+/* 취소 → 다시시작 */
+cancelBtn.addEventListener("click", () => {
+  modal.classList.add("hidden");
+  resetGame();
+  startRound();
+});
+
 /* 점수 저장 */
 saveScoreBtn.addEventListener("click", () => {
   const nick = nicknameInput.value || "익명";
@@ -109,14 +118,33 @@ saveScoreBtn.addEventListener("click", () => {
   startRound();
 });
 
-/* 취소 → 새게임 */
-cancelBtn.addEventListener("click", () => {
-  modal.classList.add("hidden");
-  resetGame();
-  startRound();
-});
-
-/* 리셋 */
+/* 초기화 */
 function resetGame() {
   score = 0;
-  tim
+  timeLimit = 2000;
+  scoreBox.textContent = "점수: 0";
+}
+
+/* 랭킹 표시 */
+function loadRanking() {
+  rankingList.innerHTML = "";
+  const ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+
+  ranking.forEach((item, i) => {
+    const li = document.createElement("li");
+    li.textContent = `${i + 1}등 - ${item.name} : ${item.score}점`;
+    rankingList.appendChild(li);
+  });
+}
+
+/* 음악 ON/OFF */
+musicBtn.addEventListener("click", () => {
+  if (musicOn) {
+    bgm.pause();
+    musicBtn.textContent = "🔇";
+  } else {
+    bgm.play();
+    musicBtn.textContent = "🔊";
+  }
+  musicOn = !musicOn;
+});
