@@ -106,8 +106,11 @@ document.querySelectorAll(".color-btn").forEach(btn => {
 function endGame() {
   clearTimeout(timer);
   clearInterval(timerInterval);
+
+  document.getElementById("final-score").textContent = `${score}점`; 
   modal.classList.add("show");
 }
+
 
 /* 등록하기 → 랭킹 저장만! */
 saveScoreBtn.addEventListener("click", () => {
