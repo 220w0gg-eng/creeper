@@ -6,7 +6,7 @@ body {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 /* 메인 화면 중앙 정렬 */
@@ -105,15 +105,21 @@ body {
   cursor: pointer;
 }
 
-/* 팝업 */
+/* 팝업 (초기에는 display:none!) */
 .modal {
   position: fixed;
   top: 0; left: 0;
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   background: rgba(0,0,0,0.6);
-  display: flex;
+  display: none;  /* 🔥 처음에는 숨김 */
   justify-content: center;
   align-items: center;
+  z-index: 999;
+}
+
+.modal.show {
+  display: flex;  /* 🔥 show 클래스가 붙을 때만 보임 */
 }
 
 .modal-content {
