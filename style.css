@@ -137,3 +137,10 @@ body {
   border: none;
   margin-bottom: 20px;
 }
+
+.final-score {
+  font-size: 60px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #fff;
+}
