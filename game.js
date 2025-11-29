@@ -1,4 +1,4 @@
-// 화면 요소
+// 화면 요소들
 const mainScreen = document.getElementById("main-screen");
 const gameScreen = document.getElementById("game-screen");
 const startBtn = document.getElementById("start-btn");
@@ -19,25 +19,32 @@ const colorNames = {
   red: "빨간색",
   blue: "파란색",
   green: "초록색",
-  yellow: "노란색",
+  yellow: "노란색"
 };
 
 let currentColor = "";
 let displayColor = "";
 let score = 0;
 let timeLimit = 2000;
-let timer;
+let timer = null;
 
-// 시작 버튼 누르면 게임 화면 표시
+/* ===========================
+   1) 시작 버튼 누를 때만 게임 시작
+   =========================== */
 startBtn.addEventListener("click", () => {
   mainScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
+
+  resetGame();
   loadRanking();
-  startRound();
+  startRound(); // << 이때만 실행됨
 });
 
-// 라운드 시작
+/* ===========================
+   2) 라운드 시작
+   =========================== */
 function startRound() {
+
   clearTimeout(timer);
 
   currentColor = colors[Math.floor(Math.random() * colors.length)];
@@ -48,22 +55,20 @@ function startRound() {
 
   timerBox.textContent = `남은 시간: ${(timeLimit / 1000).toFixed(1)}초`;
 
-  timer = setTimeout(() => {
-    endGame();
-  }, timeLimit);
+  timer = setTimeout(() => endGame(), timeLimit);
 }
 
-// 버튼 클릭이 정답인지 확인
-document.querySelectorAll(".color-btn").forEach((btn) => {
+/* ===========================
+   3) 버튼 클릭 처리
+   =========================== */
+document.querySelectorAll(".color-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const answer = btn.dataset.color;
 
     if (answer === displayColor) {
       score++;
       scoreBox.textContent = `점수: ${score}`;
-
       if (timeLimit > 600) timeLimit -= 100;
-
       startRound();
     } else {
       endGame();
@@ -71,52 +76,63 @@ document.querySelectorAll(".color-btn").forEach((btn) => {
   });
 });
 
-// 게임 종료 → 랭킹 등록
+/* ===========================
+   4) 게임 종료 → 닉네임 모달
+   =========================== */
 function endGame() {
   clearTimeout(timer);
   modal.classList.remove("hidden");
 }
 
+/* ===========================
+   5) 랭킹에 저장
+   =========================== */
 saveScoreBtn.addEventListener("click", () => {
-
   const nickname = nicknameInput.value || "익명";
   let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
 
   ranking.push({ name: nickname, score });
-
   ranking.sort((a, b) => b.score - a.score);
   ranking = ranking.slice(0, 10);
 
   localStorage.setItem("ranking", JSON.stringify(ranking));
 
-  nicknameInput.value = "";
   modal.classList.add("hidden");
-
+  nicknameInput.value = "";
+  
   resetGame();
+  loadRanking();
+  startRound();  // 바로 새 게임
 });
 
+/* ===========================
+   6) 취소 → 바로 새 라운드
+   =========================== */
 cancelBtn.addEventListener("click", () => {
   modal.classList.add("hidden");
   resetGame();
+  startRound();
 });
 
-// 게임 리셋
+/* ===========================
+   7) 게임 리셋
+   =========================== */
 function resetGame() {
   score = 0;
   timeLimit = 2000;
   scoreBox.textContent = "점수: 0";
-  startRound();
-  loadRanking();
 }
 
-// 랭킹 불러오기
+/* ===========================
+   8) 랭킹 불러오기
+   =========================== */
 function loadRanking() {
   rankingList.innerHTML = "";
   const ranking = JSON.parse(localStorage.getItem("ranking")) || [];
 
-  ranking.forEach((item, i) => {
+  ranking.forEach((item, idx) => {
     const li = document.createElement("li");
-    li.textContent = `${i + 1}등 - ${item.name} : ${item.score}점`;
+    li.textContent = `${idx + 1}등 - ${item.name} : ${item.score}점`;
     rankingList.appendChild(li);
   });
 }
