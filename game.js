@@ -42,9 +42,9 @@ const colorNames = {
 let currentColor = "";
 let displayColor = "";
 let score = 0;
-let timeLimit = 2000;      // 한 라운드 시간(ms)
+let timeLimit = 2000;
 let timer = null;
-let timerInterval = null;  // 남은 시간 표시용 인터벌
+let timerInterval = null;
 
 /* 게임 시작 버튼 */
 startBtn.addEventListener("click", () => {
@@ -71,7 +71,6 @@ function startRound() {
   wordBox.textContent = colorNames[currentColor];
   wordBox.style.color = displayColor;
 
-  // 남은시간 표시용
   let remaining = timeLimit;
   updateTimerText(remaining);
 
@@ -84,7 +83,7 @@ function startRound() {
   timer = setTimeout(() => endGame(), timeLimit);
 }
 
-/* 타이머 텍스트 반영 */
+/* 남은 시간 표시 */
 function updateTimerText(ms) {
   timerBox.textContent = `남은 시간: ${(ms / 1000).toFixed(1)}초`;
 }
@@ -95,7 +94,6 @@ document.querySelectorAll(".color-btn").forEach(btn => {
     if (btn.dataset.color === displayColor) {
       score++;
       scoreBox.textContent = `점수: ${score}`;
-
       if (timeLimit > 600) timeLimit -= 100;
       startRound();
     } else {
@@ -104,14 +102,14 @@ document.querySelectorAll(".color-btn").forEach(btn => {
   });
 });
 
-/* 게임 종료 → 팝업 */
+/* 게임 종료 → 팝업 표시 */
 function endGame() {
   clearTimeout(timer);
   clearInterval(timerInterval);
   modal.classList.add("show");
 }
 
-/* 등록하기 */
+/* 등록하기 → 랭킹 저장만! */
 saveScoreBtn.addEventListener("click", () => {
   const nick = nicknameInput.value || "익명";
   nicknameInput.value = "";
@@ -120,16 +118,13 @@ saveScoreBtn.addEventListener("click", () => {
   ranking.push({ name: nick, score });
   ranking.sort((a, b) => b.score - a.score);
   ranking = ranking.slice(0, 10);
-
   localStorage.setItem("ranking", JSON.stringify(ranking));
 
-  modal.classList.remove("show");
-  resetGame();
-  loadRanking();
-  startRound();
+  loadRanking(); 
+  // 🔥 팝업 유지 (게임 다시 시작 안 함!)
 });
 
-/* 다시하기 */
+/* 다시하기 → 팝업 닫고 게임 재시작 */
 retryBtn.addEventListener("click", () => {
   modal.classList.remove("show");
   resetGame();
