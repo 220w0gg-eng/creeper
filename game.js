@@ -1,4 +1,4 @@
-// 화면 요소들
+// 화면 요소
 const mainScreen = document.getElementById("main-screen");
 const gameScreen = document.getElementById("game-screen");
 const startBtn = document.getElementById("start-btn");
@@ -13,7 +13,21 @@ const nicknameInput = document.getElementById("nickname-input");
 const saveScoreBtn = document.getElementById("save-score-btn");
 const cancelBtn = document.getElementById("cancel-btn");
 
-// 게임 데이터
+const bgm = document.getElementById("bgm");
+const musicBtn = document.getElementById("music-toggle");
+
+// 광고 영역 이미지 리스트
+const adImages = ["ad1.jpg", "ad2.jpg", "ad3.jpg"];
+const adImgTag = document.getElementById("ad-img");
+let adIndex = 0;
+
+// 광고 자동 로테이션
+setInterval(() => {
+  adIndex = (adIndex + 1) % adImages.length;
+  adImgTag.src = adImages[adIndex];
+}, 3000);
+
+// 색상 데이터
 const colors = ["red", "blue", "green", "yellow"];
 const colorNames = {
   red: "빨간색",
@@ -29,7 +43,23 @@ let timeLimit = 2000;
 let timer = null;
 
 /* ===========================
-   1) 시작 버튼 누를 때만 게임 시작
+       음악 ON/OFF
+   =========================== */
+let isMusicOn = false;
+
+musicBtn.addEventListener("click", () => {
+  if (isMusicOn) {
+    bgm.pause();
+    musicBtn.textContent = "🔇";
+  } else {
+    bgm.play();
+    musicBtn.textContent = "🔊";
+  }
+  isMusicOn = !isMusicOn;
+});
+
+/* ===========================
+       게임 시작
    =========================== */
 startBtn.addEventListener("click", () => {
   mainScreen.classList.add("hidden");
@@ -37,14 +67,18 @@ startBtn.addEventListener("click", () => {
 
   resetGame();
   loadRanking();
-  startRound(); // << 이때만 실행됨
+  startRound();
+
+  // 게임 시작 시 자동 BGM 켜기
+  bgm.play();
+  musicBtn.textContent = "🔊";
+  isMusicOn = true;
 });
 
 /* ===========================
-   2) 라운드 시작
+       라운드 시작
    =========================== */
 function startRound() {
-
   clearTimeout(timer);
 
   currentColor = colors[Math.floor(Math.random() * colors.length)];
@@ -59,7 +93,7 @@ function startRound() {
 }
 
 /* ===========================
-   3) 버튼 클릭 처리
+       버튼 클릭 처리
    =========================== */
 document.querySelectorAll(".color-btn").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -77,7 +111,7 @@ document.querySelectorAll(".color-btn").forEach(btn => {
 });
 
 /* ===========================
-   4) 게임 종료 → 닉네임 모달
+       게임 종료 → 팝업
    =========================== */
 function endGame() {
   clearTimeout(timer);
@@ -85,9 +119,10 @@ function endGame() {
 }
 
 /* ===========================
-   5) 랭킹에 저장
+       점수 저장
    =========================== */
 saveScoreBtn.addEventListener("click", () => {
+
   const nickname = nicknameInput.value || "익명";
   let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
 
@@ -102,11 +137,11 @@ saveScoreBtn.addEventListener("click", () => {
   
   resetGame();
   loadRanking();
-  startRound();  // 바로 새 게임
+  startRound();
 });
 
 /* ===========================
-   6) 취소 → 바로 새 라운드
+       등록 취소 → 새 게임
    =========================== */
 cancelBtn.addEventListener("click", () => {
   modal.classList.add("hidden");
@@ -115,7 +150,7 @@ cancelBtn.addEventListener("click", () => {
 });
 
 /* ===========================
-   7) 게임 리셋
+       리셋
    =========================== */
 function resetGame() {
   score = 0;
@@ -124,7 +159,7 @@ function resetGame() {
 }
 
 /* ===========================
-   8) 랭킹 불러오기
+       랭킹 출력
    =========================== */
 function loadRanking() {
   rankingList.innerHTML = "";
