@@ -134,3 +134,24 @@ body {
   font-size: 48px;
   margin-bottom: 10px;
 }
+
+.modal-content .row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.modal-content .row input {
+  flex: 1;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.modal-content button {
+  padding: 8px 14px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
