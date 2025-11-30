@@ -4,31 +4,8 @@
   <meta charset="UTF-8" />
   <title>색깔 구분 반응 게임</title>
   <link rel="stylesheet" href="style.css" />
-
-  <!-- 🔥 Firebase import는 head 안에 두는 것이 안정적임 -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-    import { getDatabase, ref, push, set, get, child } 
-      from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyA7y91PPdG2Bb1euglNpdu_Z3KhlajDFVI",
-      authDomain: "creeper-ranking.firebaseapp.com",
-      databaseURL: "https://creeper-ranking-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "creeper-ranking",
-      storageBucket: "creeper-ranking.firebasestorage.app",
-      messagingSenderId: "169311756920",
-      appId: "1:169311756920:web:d803c5a07aa8f0ba36038d",
-      measurementId: "G-SR74EEREYZ"
-    };
-
-    window.firebaseApp = initializeApp(firebaseConfig);
-    window.db = getDatabase(window.firebaseApp);
-  </script>
 </head>
-
 <body>
-
 
 <!-- 메인 화면 -->
 <div id="main-screen" class="main-screen">
@@ -78,17 +55,16 @@
 <!-- 닉네임 입력 팝업 -->
 <div id="nickname-modal" class="modal">
   <div class="modal-content">
-    <h1 id="final-score" class="final-score">0점</h1>  <!-- 🔥 추가된 부분 -->
-
+    <h1 id="final-score" class="final-score">0점</h1>
     <h3>점수를 랭킹에 등록할까요?</h3>
     <input type="text" id="nickname-input" placeholder="닉네임 입력" />
-
     <button id="save-score-btn">등록하기</button>
     <button id="retry-btn">다시하기</button>
     <button id="go-main-btn">돌아가기</button>
   </div>
 </div>
 
-<script src="game.js"></script>
+<!-- 🔥 game.js를 모듈로 로드 -->
+<script type="module" src="game.js"></script>
 </body>
 </html>
