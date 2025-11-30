@@ -53,7 +53,7 @@ const sound2 = document.getElementById("sound2"); // 게임 종료 효과음
 // =========================
 // 🔊 사운드 제어
 // =========================
-let musicOn = true;   // 전체 사운드 ON/OFF
+let musicOn = false;    // 전체 사운드 ON/OFF: 기본값을 false로 변경!
 
 function syncMusicIcon() {
   musicToggle.textContent = musicOn ? "🔊" : "🔇";
@@ -63,6 +63,7 @@ function applyMusicState(fromUser = false) {
   if (musicOn) {
     const p = bgm.play();
     if (p && typeof p.catch === "function" && !fromUser) {
+      // 사용자의 상호작용(fromUser=true)이 없는 초기 로드 시에는 자동 재생 실패를 무시합니다.
       p.catch(() => {});
     }
   } else {
@@ -86,7 +87,7 @@ function playClickSound() {
 
 musicToggle.addEventListener("click", () => {
   musicOn = !musicOn;
-  applyMusicState(true);
+  applyMusicState(true); // 사용자가 직접 조작했음을 알림
   playClickSound();
 });
 
@@ -142,7 +143,8 @@ startBtn.addEventListener("click", () => {
   loadRanking();
   startRound();
 
-  if (musicOn) applyMusicState(true);
+  // musicOn이 false이므로, 사용자가 직접 켜지 않는 이상 BGM은 재생되지 않습니다.
+  if (musicOn) applyMusicState(true); 
 });
 
 
