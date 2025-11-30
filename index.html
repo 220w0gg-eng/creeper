@@ -5,7 +5,7 @@
   <title>색깔 구분 반응 게임</title>
   <link rel="stylesheet" href="style.css" />
 
-  <!-- 🔥 Firebase 로드 -->
+  <!-- 🔥 Firebase 초기화 -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
     import { getDatabase } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
@@ -21,82 +21,80 @@
       measurementId: "G-SR74EEREYZ"
     };
 
+    // Firebase 실행
     window.firebaseApp = initializeApp(firebaseConfig);
     window.db = getDatabase(window.firebaseApp);
   </script>
-
 </head>
+
 <body>
 
-<!-- 🔊 메인 화면 소리 버튼 -->
-<button id="music-toggle-main" class="music-btn">🔊</button>
+  <!-- 🔊 전역 소리 버튼 (어디서든 보이도록) -->
+  <button id="music-toggle" class="music-btn">🔊</button>
 
-<!-- 메인 화면 -->
-<div id="main-screen" class="main-screen">
-  <h1 id="rainbow-title">색깔 구분 게임</h1>
-  <button id="start-btn" class="start-btn">게임 시작</button>
-</div>
+  <!-- 메인 화면 -->
+  <div id="main-screen" class="main-screen">
+    <h1 id="rainbow-title">색깔 구분 게임</h1>
+    <button id="start-btn" class="start-btn">게임 시작</button>
+  </div>
 
-<!-- 게임 화면 -->
-<div id="game-screen" class="hidden">
+  <!-- 게임 화면 -->
+  <div id="game-screen" class="hidden">
 
-  <audio id="bgm" loop>
-    <source src="bgm.mp3" type="audio/mp3">
-  </audio>
+    <audio id="bgm" loop>
+      <source src="bgm.mp3" type="audio/mp3">
+    </audio>
 
-  <!-- 🔊 게임 화면 소리 버튼 -->
-  <button id="music-toggle-game" class="music-btn">🔊</button>
+    <div class="container">
 
-  <div class="container">
-
-    <div class="left-panel">
-      <h2>광고</h2>
-      <img id="ad-img" class="ad-box" src="ad1.jpg">
-    </div>
-
-    <div class="game-panel">
-      <h1>색깔 구분 게임</h1>
-
-      <div id="word-box">준비하세요...</div>
-
-      <div class="btn-group">
-        <button class="color-btn" data-color="red">빨간색</button>
-        <button class="color-btn" data-color="blue">파란색</button>
-        <button class="color-btn" data-color="green">초록색</button>
-        <button class="color-btn" data-color="yellow">노란색</button>
+      <!-- 광고 패널 -->
+      <div class="left-panel">
+        <h2>광고</h2>
+        <img id="ad-img" class="ad-box" src="ad1.jpg">
       </div>
 
-      <div id="timer">남은 시간: 0초</div>
-      <div id="score">점수: 0</div>
+      <!-- 게임 본체 -->
+      <div class="game-panel">
+        <h1>색깔 구분 게임</h1>
+
+        <div id="word-box">준비하세요...</div>
+
+        <div class="btn-group">
+          <button class="color-btn" data-color="red">빨간색</button>
+          <button class="color-btn" data-color="blue">파란색</button>
+          <button class="color-btn" data-color="green">초록색</button>
+          <button class="color-btn" data-color="yellow">노란색</button>
+        </div>
+
+        <div id="timer">남은 시간: 0초</div>
+        <div id="score">점수: 0</div>
+      </div>
+
+      <!-- 랭킹 패널 -->
+      <div class="right-panel">
+        <h2>랭킹 TOP 10</h2>
+        <ol id="ranking-list"></ol>
+      </div>
+
     </div>
+  </div>
 
-    <div class="right-panel">
-      <h2>랭킹 TOP 10</h2>
-      <ol id="ranking-list"></ol>
+  <!-- 닉네임 입력 팝업 -->
+  <div id="nickname-modal" class="modal">
+    <div class="modal-content">
+      <h1 id="final-score" class="final-score">0점</h1>
+      <h3>점수를 랭킹에 등록할까요?</h3>
+
+      <input type="text" id="nickname-input" placeholder="닉네임 입력" />
+
+      <button id="save-score-btn">등록하기</button>
+      <button id="retry-btn">다시하기</button>
+      <button id="go-main-btn">돌아가기</button>
     </div>
-
   </div>
-</div>
 
-<!-- 닉네임 입력 팝업 -->
-<div id="nickname-modal" class="modal">
-  <div class="modal-content">
-    <h1 id="final-score" class="final-score">0점</h1>
-
-    <h3>점수를 랭킹에 등록할까요?</h3>
-    <input type="text" id="nickname-input" placeholder="닉네임 입력" />
-
-    <!-- 🔊 팝업에서도 소리 버튼 -->
-    <button id="music-toggle-modal" class="music-btn-small">🔊</button>
-
-    <button id="save-score-btn">등록하기</button>
-    <button id="retry-btn">다시하기</button>
-    <button id="go-main-btn">돌아가기</button>
-  </div>
-</div>
-
-<!-- 🔥 게임 스크립트 -->
-<script type="module" src="game.js"></script>
+  <!-- JS -->
+  <script type="module" src="game.js"></script>
 
 </body>
 </html>
