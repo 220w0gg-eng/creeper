@@ -4,8 +4,32 @@
   <meta charset="UTF-8" />
   <title>색깔 구분 반응 게임</title>
   <link rel="stylesheet" href="style.css" />
+
+  <!-- 🔥 Firebase 로드 -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { getDatabase } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA7y91PPdG2Bb1euglNpdu_Z3KhlajDFVI",
+      authDomain: "creeper-ranking.firebaseapp.com",
+      databaseURL: "https://creeper-ranking-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "creeper-ranking",
+      storageBucket: "creeper-ranking.firebasestorage.app",
+      messagingSenderId: "169311756920",
+      appId: "1:169311756920:web:d803c5a07aa8f0ba36038d",
+      measurementId: "G-SR74EEREYZ"
+    };
+
+    window.firebaseApp = initializeApp(firebaseConfig);
+    window.db = getDatabase(window.firebaseApp);
+  </script>
+
 </head>
 <body>
+
+<!-- 🔊 메인 화면 소리 버튼 -->
+<button id="music-toggle-main" class="music-btn">🔊</button>
 
 <!-- 메인 화면 -->
 <div id="main-screen" class="main-screen">
@@ -20,7 +44,8 @@
     <source src="bgm.mp3" type="audio/mp3">
   </audio>
 
-  <button id="music-toggle" class="music-btn">🔊</button>
+  <!-- 🔊 게임 화면 소리 버튼 -->
+  <button id="music-toggle-game" class="music-btn">🔊</button>
 
   <div class="container">
 
@@ -31,6 +56,7 @@
 
     <div class="game-panel">
       <h1>색깔 구분 게임</h1>
+
       <div id="word-box">준비하세요...</div>
 
       <div class="btn-group">
@@ -56,15 +82,21 @@
 <div id="nickname-modal" class="modal">
   <div class="modal-content">
     <h1 id="final-score" class="final-score">0점</h1>
+
     <h3>점수를 랭킹에 등록할까요?</h3>
     <input type="text" id="nickname-input" placeholder="닉네임 입력" />
+
+    <!-- 🔊 팝업에서도 소리 버튼 -->
+    <button id="music-toggle-modal" class="music-btn-small">🔊</button>
+
     <button id="save-score-btn">등록하기</button>
     <button id="retry-btn">다시하기</button>
     <button id="go-main-btn">돌아가기</button>
   </div>
 </div>
 
-<!-- 🔥 game.js를 모듈로 로드 -->
+<!-- 🔥 게임 스크립트 -->
 <script type="module" src="game.js"></script>
+
 </body>
 </html>
