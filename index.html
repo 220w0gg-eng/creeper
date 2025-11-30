@@ -65,11 +65,17 @@
         <h1>색깔 구분 게임</h1>
         <div id="word-box">준비하세요...</div>
 
-        <div class="btn-group">
-          <button class="color-btn" data-color="red">빨간색</button>
-          <button class="color-btn" data-color="blue">파란색</button>
-          <button class="color-btn" data-color="green">초록색</button>
-          <button class="color-btn" data-color="yellow">노란색</button>
+          <div class="btn-group">
+          <!-- 첫 번째 줄: 빨간색, 노란색 -->
+          <div class="btn-row">
+            <button class="color-btn" data-color="red">빨간색</button>
+            <button class="color-btn" data-color="yellow">노란색</button>
+          </div>
+          <!-- 두 번째 줄: 초록색, 파란색 -->
+          <div class="btn-row">
+            <button class="color-btn" data-color="green">초록색</button>
+            <button class="color-btn" data-color="blue">파란색</button>
+          </div>
         </div>
 
         <div id="timer">남은 시간: 0초</div>
