@@ -103,12 +103,16 @@ let timeLimit = 2000;
 let timer = null;
 let timerInterval = null;
 
+// 🔥 이번 게임 결과가 이미 랭킹에 등록되었는지 여부
+let hasSavedScore = false;
+
 
 // =========================
 // ▶ 게임 시작
 // =========================
 startBtn.addEventListener("click", () => {
-  modal.classList.add("hidden");  // 혹시 남아있으면 제거
+  // 혹시 이전 게임 팝업이 남아 있으면 숨기기
+  modal.classList.add("hidden");
   modal.classList.remove("show");
 
   mainScreen.classList.add("hidden");
@@ -181,15 +185,24 @@ function endGame() {
 
   finalScoreText.textContent = `${score}점`;
 
-  modal.classList.remove("hidden"); // 중요
+  // 이번 게임은 아직 등록 X 상태로 시작
+  hasSavedScore = false;
+  saveScoreBtn.disabled = false;
+
+  modal.classList.remove("hidden");
   modal.classList.add("show");
 }
 
 
 // =========================
-// 💾 Firebase 저장
+// 💾 Firebase 저장 (한 게임당 1번만)
 // =========================
 saveScoreBtn.addEventListener("click", async () => {
+  if (hasSavedScore) {
+    alert("이 점수는 이미 등록했습니다. 새 게임을 시작해 주세요.");
+    return;
+  }
+
   const nick = nicknameInput.value.trim() || "익명";
   nicknameInput.value = "";
 
@@ -203,10 +216,13 @@ saveScoreBtn.addEventListener("click", async () => {
       time: Date.now()
     });
 
-    loadRanking(); // 갱신
+    hasSavedScore = true;        // ✅ 이번 게임은 더 이상 등록 불가
+    saveScoreBtn.disabled = true; // 버튼도 비활성화
+    loadRanking();               // 랭킹 갱신
+
   } catch (err) {
     console.error("점수 저장 오류:", err);
-    alert("점수 저장 중 오류 발생!");
+    alert("점수 저장 중 오류가 발생했습니다.");
   }
 });
 
@@ -221,7 +237,6 @@ retryBtn.addEventListener("click", () => {
   resetGame();
   startRound();
 });
-
 
 // =========================
 // ⏮ 메인 화면으로
@@ -245,6 +260,9 @@ function resetGame() {
   timeLimit = 2000;
   scoreBox.textContent = "점수: 0";
   timerBox.textContent = "남은 시간: 0초";
+
+  hasSavedScore = false;
+  saveScoreBtn.disabled = false;
 }
 
 
@@ -260,7 +278,7 @@ async function loadRanking() {
 
     if (!snapshot.exists()) {
       const li = document.createElement("li");
-      li.textContent = "등록된 랭킹이 없습니다.";
+      li.textContent = "아직 등록된 랭킹이 없습니다.";
       rankingList.appendChild(li);
       return;
     }
@@ -278,7 +296,7 @@ async function loadRanking() {
 
   } catch (err) {
     console.error("랭킹 로드 오류:", err);
-    rankingList.innerHTML = "<li>랭킹 로드 중 오류 발생</li>";
+    rankingList.innerHTML = "<li>랭킹 로드 중 오류가 발생했습니다.</li>";
   }
 }
 
