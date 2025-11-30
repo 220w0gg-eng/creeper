@@ -27,26 +27,13 @@
 </head>
 
 <body>
-  <!-- 🔊 전역 소리 버튼 -->
-  <button id="music-toggle" class="music-btn">🔊</button>
-  <audio id="sound1" src="sound1.mp3"></audio>
-  <audio id="sound2" src="sound2.mp3"></audio>
 
   <!-- 메인 화면 -->
   <div id="main-screen" class="main-screen">
-    <h1 id="rainbow-title">색깔 구분 게임</h1>
-    <!-- 🔵 메인 화면용 게임 설명 버튼 -->
-<button id="help-btn" class="help-btn">❓
-  <div id="help-tooltip" class="help-tooltip">
-    <h3>🎮 게임 설명 🎮</h3>
-    <p>화면에 보이는 글씨의 ‘색깔’을 맞추면 됩니다.</p>
-    <p>예) 글씨는 “빨간색”이라고 되어 있지만,</p>
-    <p>파란색으로 보이면 → 파란색 버튼 클릭!</p>
-    <p>시간은 점점 빨라집니다. 틀리면 게임 종료!</p>
-  </div>
-</button>
-
-    <button id="start-btn" class="start-btn">게임 시작</button>
+    <h1 id="rainbow-title">COLOR MATCH SPEEDSTER</h1>
+    <p>스트룹 효과를 이겨내고 반응 속도를 테스트하세요!</p>
+    <button id="start-btn" class="main-btn">게임 시작</button>
+    <button id="help-btn" class="main-btn">게임 방법</button>
   </div>
 
   <!-- 게임 화면 -->
@@ -58,18 +45,27 @@
     <div class="container">
       <div class="left-panel">
         <h2>광고</h2>
-        <img id="ad-img" class="ad-box" src="ad1.jpg">
+        <!-- 실제 프로젝트에서는 여기에 배너나 관련 정보를 넣을 수 있습니다. -->
+        <img id="ad-img" class="ad-box" src="https://placehold.co/150x250/333333/FFFFFF?text=Project+Ad">
       </div>
 
       <div class="game-panel">
         <h1>색깔 구분 게임</h1>
+        <!-- 글자와 색상이 랜덤으로 표시되는 영역 -->
         <div id="word-box">준비하세요...</div>
 
+        <!-- 버튼 위치 수정: 빨간색 노란색 / 초록색 파란색 -->
         <div class="btn-group">
-          <button class="color-btn" data-color="red">빨간색</button>
-          <button class="color-btn" data-color="blue">파란색</button>
-          <button class="color-btn" data-color="green">초록색</button>
-          <button class="color-btn" data-color="yellow">노란색</button>
+          <!-- 첫 번째 줄 -->
+          <div class="btn-row">
+            <button class="color-btn" data-color="red">빨간색</button>
+            <button class="color-btn" data-color="yellow">노란색</button>
+          </div>
+          <!-- 두 번째 줄 -->
+          <div class="btn-row">
+            <button class="color-btn" data-color="green">초록색</button>
+            <button class="color-btn" data-color="blue">파란색</button>
+          </div>
         </div>
 
         <div id="timer">남은 시간: 0초</div>
@@ -90,20 +86,29 @@
 
     <!-- 첫 번째 줄 -->
     <div class="row">
-      <input type="text" id="nickname-input" placeholder="닉네임 입력">
-      <button id="save-score-btn">등록하기</button>
+      <input type="text" id="nickname-input" placeholder="닉네임을 입력하세요">
     </div>
 
     <!-- 두 번째 줄 -->
     <div class="row">
-      <button id="retry-btn">다시하기</button>
-      <button id="go-main-btn">돌아가기</button>
+      <button id="save-score-btn" class="action-btn">등록</button>
+      <button id="return-main-btn" class="action-btn secondary-btn">메인으로</button>
     </div>
   </div>
 </div>
 
+<div id="help-modal" class="modal hidden">
+  <div class="modal-content">
+    <h2>게임 방법</h2>
+    <p>화면에 표시되는 **글자**가 아닌, 글자가 **실제로 어떤 색**으로 쓰여 있는지 4가지 버튼 중 하나를 선택해야 합니다.</p>
+    <p>예시: <span style="color: yellow; font-weight: bold;">빨간색</span> → 정답은 **노란색** 버튼!</p>
+    <p>제한 시간은 1초이며, 시간이 초과되면 게임이 종료됩니다. 랭킹에 등록하여 친구들과 경쟁해보세요!</p>
+    <button id="close-help-btn" class="action-btn secondary-btn">닫기</button>
+  </div>
+</div>
 
-  <!-- 🔥 game.js는 body 맨 아래에 있어야 정상 작동 -->
-  <script type="module" src="game.js"></script>
+<button id="music-btn" class="music-btn">🎶</button>
+
+<script type="module" src="game.js"></script>
 </body>
 </html>
