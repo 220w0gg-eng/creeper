@@ -5,7 +5,10 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
 }
 
-.hidden { display: none; }
+.hidden {
+  display: none !important;
+}
+
 
 .music-btn {
   position: fixed;
