@@ -26,6 +26,7 @@ const db = getDatabase(app);
 const mainScreen = document.getElementById("main-screen");
 const gameScreen = document.getElementById("game-screen");
 const startBtn = document.getElementById("start-btn");
+const helpBtn = document.getElementById("help-btn");
 
 const wordBox = document.getElementById("word-box");
 const timerBox = document.getElementById("timer");
@@ -305,3 +306,15 @@ async function loadRanking() {
 // 🔊 초기 아이콘 세팅
 // =========================
 syncMusicIcon();
+
+// ▶ 게임 시작 시 도움말 버튼 숨김
+startBtn.addEventListener("click", () => {
+  helpBtn.style.display = "none";
+});
+
+// ⏮ 메인 화면 복귀 시 다시 보이기
+goMainBtn.addEventListener("click", () => {
+  helpBtn.style.display = "block";
+});
+
+
