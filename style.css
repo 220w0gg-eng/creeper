@@ -18,7 +18,7 @@ body {
   font-size: 24px;
   border-radius: 50%;
   cursor: pointer;
-  z-index: 9999;
+  z-index: 100000;  
 }
 
 .music-btn-small {
