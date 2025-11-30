@@ -52,154 +52,69 @@ body {
   animation: rainbow 4s infinite alternate;
 }
 @keyframes rainbow {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
+  0% { background-position: 0%; }
+  100% { background-position: 100%; }
 }
 
-.main-btn {
-  padding: 15px 30px;
-  font-size: 20px;
-  margin-top: 20px;
-  background: linear-gradient(45deg, #FF6B6B, #F9C349);
-  color: white;
+.start-btn {
+  padding: 15px 40px;
+  font-size: 28px;
+  background: #333;
   border: none;
-  border-radius: 10px;
+  color: white;
+  border-radius: 15px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.main-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-}
-
-/* 게임 UI 레이아웃 */
 .container {
   display: flex;
   height: 100vh;
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 .left-panel, .right-panel {
-  width: 200px;
-  padding: 20px;
+  width: 20%;
   background: #222;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow-y: auto; /* 랭킹 리스트를 위한 스크롤 */
-}
-
-.game-panel {
-  flex-grow: 1;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    height: auto;
-  }
-  .left-panel, .right-panel {
-    width: 100%;
-    height: auto;
-    flex-direction: row;
-    justify-content: space-around;
-  }
-  .game-panel {
-    padding-top: 50px; /* 상단 패널과의 간격 확보 */
-  }
-}
-
-
-/* 광고 및 랭킹 */
-.ad-box {
-  width: 100%;
-  height: 200px;
-  background: #333;
-  margin-top: 10px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-#ranking-list {
-  list-style: none;
-  padding: 0;
-  width: 100%;
-}
-
-#ranking-list li {
-  background: #333;
-  padding: 8px;
-  margin-bottom: 5px;
-  border-radius: 4px;
-  font-size: 14px;
-  text-align: left;
-}
-
-/* 게임 플레이 관련 스타일 */
-#word-box {
-  font-size: 72px;
-  font-weight: 900;
-  padding: 30px;
-  margin: 40px 0;
-  border-radius: 15px;
-  background: #222;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  min-width: 300px;
   text-align: center;
 }
 
-#timer, #score {
-  font-size: 28px;
-  font-weight: bold;
-  margin-top: 20px;
-  color: #FFC349;
+.ad-box {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
 }
 
-/* 버튼 그룹 및 버튼 스타일 */
-.btn-group {
-  display: flex;
-  flex-direction: column; /* 세로로 배치되도록 변경 */
-  gap: 10px; /* 줄 간격 */
-  margin-top: 20px;
+.game-panel {
+  width: 60%;
+  text-align: center;
 }
 
-.btn-row {
+#word-box {
+  font-size: 48px;
+  margin-top: 60px;  
+  margin-bottom: 20px;
+  height: 80px;
   display: flex;
   justify-content: center;
-  gap: 10px; /* 버튼 간격 */
+  align-items: center;
 }
 
 
 .color-btn {
   padding: 15px 25px;
-  margin: 0; /* btn-row에서 간격을 처리하므로 margin 제거 */
+  margin: 10px;
   font-size: 22px;
   border-radius: 10px;
   border: none;
   cursor: pointer;
-  transition: transform 0.1s, opacity 0.1s;
-  flex-basis: 150px; /* 버튼 크기 일정하게 유지 */
 }
 
-.color-btn:active {
-  transform: scale(0.95);
-  opacity: 0.8;
-}
-
-/* 모달 스타일 */
 .modal {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.6);
   display: none;
   justify-content: center;
   align-items: center;
@@ -214,55 +129,76 @@ body {
   border-radius: 12px;
   width: 330px;
   text-align: center;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
 .final-score {
   font-size: 48px;
   margin-bottom: 10px;
-  color: #49F9C3;
 }
 
 .modal-content .row {
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 .modal-content .row input {
   flex: 1;
-  padding: 10px;
+  padding: 8px;
   font-size: 16px;
-  border-radius: 6px;
-  border: 1px solid #555;
-  background: #222;
-  color: white;
 }
 
 .modal-content button {
-  padding: 10px 18px;
+  padding: 8px 14px;
   font-size: 16px;
   border-radius: 6px;
   border: none;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
-.action-btn {
-  background: #FF6B6B;
+#ranking-list {
+    list-style: none;
+    padding: 0;
+}
+
+
+
+/* ❓ 도움말 버튼 (메인 화면에서만 보임) */
+.help-btn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #444;
   color: white;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 1000;
 }
 
-.secondary-btn {
-  background: #555;
+/* 툴팁 박스 */
+.help-tooltip {
+  display: none;
+  position: absolute;
+  top: 55px;
+  left: 0;
+  width: 290px;
+  padding: 15px;
+  background: rgba(0,0,0,0.85);
   color: white;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #888;
 }
 
-.action-btn:hover {
-  background: #FF4F4F;
+.help-btn:hover .help-tooltip {
+  display: block;
 }
 
-.secondary-btn:hover {
-  background: #666;
+#timer {
+  margin-top: 20px;  
 }
