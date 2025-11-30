@@ -107,34 +107,36 @@ function endGame() {
   clearTimeout(timer);
   clearInterval(timerInterval);
 
-  document.getElementById("final-score").textContent = `${score}점`; 
+  document.getElementById("final-score").textContent = `${score}점`;
   modal.classList.add("show");
 }
 
-
-/* 등록하기 → 랭킹 저장만! */
-saveScoreBtn.addEventListener("click", () => {
+/* 등록하기 (Firebase 저장만) */
+saveScoreBtn.addEventListener("click", async () => {
   const nick = nicknameInput.value || "익명";
   nicknameInput.value = "";
 
-  let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
-  ranking.push({ name: nick, score });
-  ranking.sort((a, b) => b.score - a.score);
-  ranking = ranking.slice(0, 10);
-  localStorage.setItem("ranking", JSON.stringify(ranking));
+  const db = window.db;
+  const rankingRef = ref(db, "ranking");
+  const newEntry = push(rankingRef);
 
-  loadRanking(); 
-  // 🔥 팝업 유지 (게임 다시 시작 안 함!)
+  await set(newEntry, {
+    name: nick,
+    score: score,
+    time: Date.now()
+  });
+
+  loadRanking();
 });
 
-/* 다시하기 → 팝업 닫고 게임 재시작 */
+/* 다시하기 */
 retryBtn.addEventListener("click", () => {
   modal.classList.remove("show");
   resetGame();
   startRound();
 });
 
-/* 돌아가기 → 메인 화면 */
+/* 메인 메뉴로 */
 goMainBtn.addEventListener("click", () => {
   modal.classList.remove("show");
   resetGame();
@@ -147,23 +149,33 @@ goMainBtn.addEventListener("click", () => {
   musicBtn.textContent = "🔇";
 });
 
-/* 리셋 */
+/* 초기화 */
 function resetGame() {
   score = 0;
   timeLimit = 2000;
   scoreBox.textContent = "점수: 0";
 }
 
-/* 랭킹 출력 */
-function loadRanking() {
-  rankingList.innerHTML = "";
-  const ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+/* 랭킹 불러오기 (Firebase 전체 랭킹) */
+async function loadRanking() {
+  const db = window.db;
+  const rankingRef = ref(db, "ranking");
 
-  ranking.forEach((item, i) => {
-    const li = document.createElement("li");
-    li.textContent = `${i + 1}등 - ${item.name} : ${item.score}점`;
-    rankingList.appendChild(li);
-  });
+  const snapshot = await get(rankingRef);
+  rankingList.innerHTML = "";
+
+  if (snapshot.exists()) {
+    const entries = Object.values(snapshot.val());
+
+    entries
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 10)
+      .forEach((item, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${i + 1}등 - ${item.name} : ${item.score}점`;
+        rankingList.appendChild(li);
+      });
+  }
 }
 
 /* 음악 토글 */
