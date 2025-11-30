@@ -23,34 +23,34 @@ const db = getDatabase(app);
 // =========================
 // 🎮 DOM 요소 선택
 // =========================
-const mainScreen = document.getElementById("main-screen");
-const gameScreen = document.getElementById("game-screen");
-const startBtn = document.getElementById("start-btn");
-const helpBtn = document.getElementById("help-btn");
+const mainScreen   = document.getElementById("main-screen");
+const gameScreen   = document.getElementById("game-screen");
+const startBtn     = document.getElementById("start-btn");
+const helpBtn      = document.getElementById("help-btn");
 
-const wordBox = document.getElementById("word-box");
-const timerBox = document.getElementById("timer");
-const scoreBox = document.getElementById("score");
-const rankingList = document.getElementById("ranking-list");
+const wordBox      = document.getElementById("word-box");
+const timerBox     = document.getElementById("timer");
+const scoreBox     = document.getElementById("score");
+const rankingList  = document.getElementById("ranking-list");
 
-const modal = document.getElementById("nickname-modal");
-const nicknameInput = document.getElementById("nickname-input");
+const modal        = document.getElementById("nickname-modal");
+const nicknameInput= document.getElementById("nickname-input");
 const finalScoreText = document.getElementById("final-score");
 
 const saveScoreBtn = document.getElementById("save-score-btn");
-const retryBtn = document.getElementById("retry-btn");
-const goMainBtn = document.getElementById("go-main-btn");
+const retryBtn     = document.getElementById("retry-btn");
+const goMainBtn    = document.getElementById("go-main-btn");
 
-const adImg = document.getElementById("ad-img");
+const adImg        = document.getElementById("ad-img");
 
-const bgm = document.getElementById("bgm");
-const musicToggle = document.getElementById("music-toggle");
+const bgm          = document.getElementById("bgm");
+const musicToggle  = document.getElementById("music-toggle");
 
 
 // =========================
 // 🔊 음악 제어
 // =========================
-let musicOn = true;
+let musicOn = true;   // 기본값: 켜짐
 
 function syncMusicIcon() {
   musicToggle.textContent = musicOn ? "🔊" : "🔇";
@@ -60,6 +60,7 @@ function applyMusicState(fromUser = false) {
   if (musicOn) {
     const p = bgm.play();
     if (p && typeof p.catch === "function" && !fromUser) {
+      // 브라우저 자동재생 차단 에러는 무시
       p.catch(() => {});
     }
   } else {
@@ -68,6 +69,7 @@ function applyMusicState(fromUser = false) {
   syncMusicIcon();
 }
 
+// 전역 소리 버튼
 musicToggle.addEventListener("click", () => {
   musicOn = !musicOn;
   applyMusicState(true);
@@ -91,33 +93,37 @@ setInterval(() => {
 // =========================
 const colors = ["red", "blue", "green", "yellow"];
 const colorNames = {
-  red: "빨간색",
-  blue: "파란색",
-  green: "초록색",
+  red:    "빨간색",
+  blue:   "파란색",
+  green:  "초록색",
   yellow: "노란색"
 };
 
-let currentColor = "";
-let displayColor = "";
-let score = 0;
-let timeLimit = 2000;
-let timer = null;
-let timerInterval = null;
+let currentColor   = "";
+let displayColor   = "";
+let score          = 0;
+let timeLimit      = 2000;  // ms
+let timer          = null;
+let timerInterval  = null;
 
-// 🔥 이번 게임 결과가 이미 랭킹에 등록되었는지 여부
+// 이번 게임 점수가 랭킹에 이미 저장됐는지
 let hasSavedScore = false;
 
 
 // =========================
-// ▶ 게임 시작
+// ▶ 게임 시작 (단 하나의 리스너)
 // =========================
 startBtn.addEventListener("click", () => {
-  // 혹시 이전 게임 팝업이 남아 있으면 숨기기
-  modal.classList.add("hidden");
-  modal.classList.remove("show");
-
+  // 메인 → 게임 화면 전환
   mainScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
+
+  // 메인 화면에만 보이는 도움말 버튼 숨기기
+  if (helpBtn) helpBtn.style.display = "none";
+
+  // 혹시 남아있을지도 모르는 이전 팝업 강제 숨김
+  modal.classList.add("hidden");
+  modal.classList.remove("show");
 
   resetGame();
   loadRanking();
@@ -143,6 +149,7 @@ function startRound() {
   let remaining = timeLimit;
   updateTimerText(remaining);
 
+  // 0.1초 단위로 남은 시간 표시
   timerInterval = setInterval(() => {
     remaining -= 100;
     if (remaining < 0) remaining = 0;
@@ -162,10 +169,12 @@ function updateTimerText(ms) {
 // =========================
 document.querySelectorAll(".color-btn").forEach(btn => {
   btn.addEventListener("click", () => {
+    // 글씨 색(displayColor) 기준으로 정답 체크
     if (btn.dataset.color === displayColor) {
       score++;
       scoreBox.textContent = `점수: ${score}`;
 
+      // 점점 제한 시간 감소 (최소 0.6초)
       if (timeLimit > 600) {
         timeLimit -= 100;
       }
@@ -178,7 +187,7 @@ document.querySelectorAll(".color-btn").forEach(btn => {
 
 
 // =========================
-// 🛑 게임 종료 → 팝업
+// 🛑 게임 종료 → 팝업 표시
 // =========================
 function endGame() {
   clearTimeout(timer);
@@ -186,8 +195,7 @@ function endGame() {
 
   finalScoreText.textContent = `${score}점`;
 
-  // 이번 게임은 아직 등록 X 상태로 시작
-  hasSavedScore = false;
+  hasSavedScore = false;        // 이번 게임은 아직 저장 X
   saveScoreBtn.disabled = false;
 
   modal.classList.remove("hidden");
@@ -196,7 +204,7 @@ function endGame() {
 
 
 // =========================
-// 💾 Firebase 저장 (한 게임당 1번만)
+// 💾 랭킹 등록 (한 게임당 1번만)
 // =========================
 saveScoreBtn.addEventListener("click", async () => {
   if (hasSavedScore) {
@@ -209,7 +217,7 @@ saveScoreBtn.addEventListener("click", async () => {
 
   try {
     const rankingRef = ref(db, "ranking");
-    const newEntry = push(rankingRef);
+    const newEntry   = push(rankingRef);
 
     await set(newEntry, {
       name: nick,
@@ -217,10 +225,10 @@ saveScoreBtn.addEventListener("click", async () => {
       time: Date.now()
     });
 
-    hasSavedScore = true;        // ✅ 이번 게임은 더 이상 등록 불가
-    saveScoreBtn.disabled = true; // 버튼도 비활성화
-    loadRanking();               // 랭킹 갱신
+    hasSavedScore       = true;
+    saveScoreBtn.disabled = true; // 더 이상 같은 점수로 등록 불가
 
+    loadRanking();   // 랭킹 갱신
   } catch (err) {
     console.error("점수 저장 오류:", err);
     alert("점수 저장 중 오류가 발생했습니다.");
@@ -239,6 +247,7 @@ retryBtn.addEventListener("click", () => {
   startRound();
 });
 
+
 // =========================
 // ⏮ 메인 화면으로
 // =========================
@@ -250,19 +259,25 @@ goMainBtn.addEventListener("click", () => {
 
   gameScreen.classList.add("hidden");
   mainScreen.classList.remove("hidden");
+
+  // 메인 화면으로 돌아오면 도움말 버튼 다시 보이게
+  if (helpBtn) helpBtn.style.display = "block";
 });
 
 
 // =========================
-// ♻ 리셋
+// ♻ 게임 리셋
 // =========================
 function resetGame() {
-  score = 0;
-  timeLimit = 2000;
+  score      = 0;
+  timeLimit  = 2000;
   scoreBox.textContent = "점수: 0";
   timerBox.textContent = "남은 시간: 0초";
 
-  hasSavedScore = false;
+  clearTimeout(timer);
+  clearInterval(timerInterval);
+
+  hasSavedScore       = false;
   saveScoreBtn.disabled = false;
 }
 
@@ -273,7 +288,7 @@ function resetGame() {
 async function loadRanking() {
   try {
     const rankingRef = ref(db, "ranking");
-    const snapshot = await get(rankingRef);
+    const snapshot   = await get(rankingRef);
 
     rankingList.innerHTML = "";
 
@@ -306,15 +321,3 @@ async function loadRanking() {
 // 🔊 초기 아이콘 세팅
 // =========================
 syncMusicIcon();
-
-// ▶ 게임 시작 시 도움말 버튼 숨김
-startBtn.addEventListener("click", () => {
-  helpBtn.style.display = "none";
-});
-
-// ⏮ 메인 화면 복귀 시 다시 보이기
-goMainBtn.addEventListener("click", () => {
-  helpBtn.style.display = "block";
-});
-
-
