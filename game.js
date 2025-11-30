@@ -260,7 +260,7 @@ async function loadRanking() {
 
     if (!snapshot.exists()) {
       const li = document.createElement("li");
-      li.textContent = "아직 등록된 랭킹이 없습니다.";
+      li.textContent = "등록된 랭킹이 없습니다.";
       rankingList.appendChild(li);
       return;
     }
