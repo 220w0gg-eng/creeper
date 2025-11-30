@@ -70,18 +70,25 @@
     </div>
   </div>
 
-  <!-- 🔥 닉네임 팝업 (기본 hidden 유지) -->
-  <div id="nickname-modal" class="modal hidden">
-    <div class="modal-content">
-      <h1 id="final-score" class="final-score">0점</h1>
-      <h3>점수를 랭킹에 등록할까요?</h3>
-      <input type="text" id="nickname-input" placeholder="닉네임 입력">
+<div id="nickname-modal" class="modal hidden">
+  <div class="modal-content">
+    <h1 id="final-score" class="final-score">0점</h1>
+    <h3>점수를 랭킹에 등록할까요?</h3>
 
+    <!-- 첫 번째 줄 -->
+    <div class="row">
+      <input type="text" id="nickname-input" placeholder="닉네임 입력">
       <button id="save-score-btn">등록하기</button>
+    </div>
+
+    <!-- 두 번째 줄 -->
+    <div class="row">
       <button id="retry-btn">다시하기</button>
       <button id="go-main-btn">돌아가기</button>
     </div>
   </div>
+</div>
+
 
   <!-- 🔥 game.js는 body 맨 아래에 있어야 정상 작동 -->
   <script type="module" src="game.js"></script>
