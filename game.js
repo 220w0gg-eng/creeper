@@ -1,4 +1,26 @@
-// 요소 선택
+// 🔥 Firebase import
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+import { getDatabase, ref, push, set, get } 
+  from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+
+// 🔥 Firebase 설정
+const firebaseConfig = {
+  apiKey: "AIzaSyA7y91PPdG2Bb1euglNpdu_Z3KhlajDFVI",
+  authDomain: "creeper-ranking.firebaseapp.com",
+  databaseURL: "https://creeper-ranking-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "creeper-ranking",
+  storageBucket: "creeper-ranking.firebasestorage.app",
+  messagingSenderId: "169311756920",
+  appId: "1:169311756920:web:d803c5a07aa8f0ba36038d",
+  measurementId: "G-SR74EEREYZ"
+};
+
+// Firebase 실행
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// ====== 기존 게임 코드 시작 ======
+
 const mainScreen = document.getElementById("main-screen");
 const gameScreen = document.getElementById("game-screen");
 const startBtn = document.getElementById("start-btn");
@@ -46,7 +68,7 @@ let timeLimit = 2000;
 let timer = null;
 let timerInterval = null;
 
-/* 게임 시작 버튼 */
+// 게임 시작
 startBtn.addEventListener("click", () => {
   mainScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
@@ -60,7 +82,7 @@ startBtn.addEventListener("click", () => {
   musicBtn.textContent = "🔊";
 });
 
-/* 라운드 시작 */
+// 라운드 시작
 function startRound() {
   clearTimeout(timer);
   clearInterval(timerInterval);
@@ -83,12 +105,12 @@ function startRound() {
   timer = setTimeout(() => endGame(), timeLimit);
 }
 
-/* 남은 시간 표시 */
+// 남은 시간 표시
 function updateTimerText(ms) {
   timerBox.textContent = `남은 시간: ${(ms / 1000).toFixed(1)}초`;
 }
 
-/* 버튼 클릭 */
+// 버튼 클릭
 document.querySelectorAll(".color-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     if (btn.dataset.color === displayColor) {
@@ -102,7 +124,7 @@ document.querySelectorAll(".color-btn").forEach(btn => {
   });
 });
 
-/* 게임 종료 → 팝업 표시 */
+// 게임 종료
 function endGame() {
   clearTimeout(timer);
   clearInterval(timerInterval);
@@ -111,12 +133,11 @@ function endGame() {
   modal.classList.add("show");
 }
 
-/* 등록하기 (Firebase 저장만) */
+// 🔥 등록하기 (Firebase 저장만, 재시작 X)
 saveScoreBtn.addEventListener("click", async () => {
   const nick = nicknameInput.value || "익명";
   nicknameInput.value = "";
 
-  const db = window.db;
   const rankingRef = ref(db, "ranking");
   const newEntry = push(rankingRef);
 
@@ -126,17 +147,18 @@ saveScoreBtn.addEventListener("click", async () => {
     time: Date.now()
   });
 
+  // 랭킹만 새로고침 (팝업은 그대로)
   loadRanking();
 });
 
-/* 다시하기 */
+// 다시하기
 retryBtn.addEventListener("click", () => {
   modal.classList.remove("show");
   resetGame();
   startRound();
 });
 
-/* 메인 메뉴로 */
+// 메인 화면으로
 goMainBtn.addEventListener("click", () => {
   modal.classList.remove("show");
   resetGame();
@@ -149,19 +171,18 @@ goMainBtn.addEventListener("click", () => {
   musicBtn.textContent = "🔇";
 });
 
-/* 초기화 */
+// 리셋
 function resetGame() {
   score = 0;
   timeLimit = 2000;
   scoreBox.textContent = "점수: 0";
 }
 
-/* 랭킹 불러오기 (Firebase 전체 랭킹) */
+// 🔥 Firebase에서 랭킹 불러오기
 async function loadRanking() {
-  const db = window.db;
   const rankingRef = ref(db, "ranking");
-
   const snapshot = await get(rankingRef);
+
   rankingList.innerHTML = "";
 
   if (snapshot.exists()) {
@@ -178,7 +199,7 @@ async function loadRanking() {
   }
 }
 
-/* 음악 토글 */
+// 음악 토글
 musicBtn.addEventListener("click", () => {
   if (musicOn) {
     bgm.pause();
