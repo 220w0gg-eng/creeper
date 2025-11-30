@@ -3,6 +3,7 @@ body {
   background: #111;
   color: white;
   font-family: 'Noto Sans KR', sans-serif;
+  min-width: 800px; 
 }
 
 .hidden {
@@ -69,6 +70,7 @@ body {
 .container {
   display: flex;
   height: 100vh;
+  min-width: 800px;
 }
 
 .left-panel, .right-panel {
