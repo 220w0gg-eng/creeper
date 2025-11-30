@@ -19,6 +19,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+
 // =========================
 // 🎮 DOM 요소 선택
 // =========================
@@ -44,10 +45,11 @@ const adImg = document.getElementById("ad-img");
 const bgm = document.getElementById("bgm");
 const musicToggle = document.getElementById("music-toggle");
 
+
 // =========================
 // 🔊 음악 제어
 // =========================
-let musicOn = true;   // 기본값: 켜짐
+let musicOn = true;
 
 function syncMusicIcon() {
   musicToggle.textContent = musicOn ? "🔊" : "🔇";
@@ -55,10 +57,8 @@ function syncMusicIcon() {
 
 function applyMusicState(fromUser = false) {
   if (musicOn) {
-    // 사용자 이벤트 안에서만 play 시도
     const p = bgm.play();
     if (p && typeof p.catch === "function" && !fromUser) {
-      // autoplay 막힐 수 있으니 에러 무시
       p.catch(() => {});
     }
   } else {
@@ -67,11 +67,11 @@ function applyMusicState(fromUser = false) {
   syncMusicIcon();
 }
 
-// 전역 소리 버튼 (메인 / 게임 / 팝업 어디서든)
 musicToggle.addEventListener("click", () => {
   musicOn = !musicOn;
   applyMusicState(true);
 });
+
 
 // =========================
 // 📺 광고 슬라이드
@@ -83,6 +83,7 @@ setInterval(() => {
   adIndex = (adIndex + 1) % adList.length;
   adImg.src = adList[adIndex];
 }, 3000);
+
 
 // =========================
 // 🎯 게임 데이터
@@ -98,14 +99,18 @@ const colorNames = {
 let currentColor = "";
 let displayColor = "";
 let score = 0;
-let timeLimit = 2000;   // ms
+let timeLimit = 2000;
 let timer = null;
 let timerInterval = null;
+
 
 // =========================
 // ▶ 게임 시작
 // =========================
 startBtn.addEventListener("click", () => {
+  modal.classList.add("hidden");  // 혹시 남아있으면 제거
+  modal.classList.remove("show");
+
   mainScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
 
@@ -115,6 +120,7 @@ startBtn.addEventListener("click", () => {
 
   if (musicOn) applyMusicState(true);
 });
+
 
 // =========================
 // 🔁 라운드 시작
@@ -132,7 +138,6 @@ function startRound() {
   let remaining = timeLimit;
   updateTimerText(remaining);
 
-  // 0.1초마다 숫자 줄어들게 표시
   timerInterval = setInterval(() => {
     remaining -= 100;
     if (remaining < 0) remaining = 0;
@@ -146,40 +151,43 @@ function updateTimerText(ms) {
   timerBox.textContent = `남은 시간: ${(ms / 1000).toFixed(1)}초`;
 }
 
+
 // =========================
 // 🎛 색 버튼 클릭
 // =========================
 document.querySelectorAll(".color-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     if (btn.dataset.color === displayColor) {
-      // 정답
       score++;
       scoreBox.textContent = `점수: ${score}`;
 
       if (timeLimit > 600) {
-        timeLimit -= 100;   // 점점 시간 줄이기
+        timeLimit -= 100;
       }
       startRound();
     } else {
-      // 오답 → 게임 종료
       endGame();
     }
   });
 });
 
+
 // =========================
-// 🛑 게임 종료 → 팝업 띄우기
+// 🛑 게임 종료 → 팝업
 // =========================
 function endGame() {
   clearTimeout(timer);
   clearInterval(timerInterval);
 
   finalScoreText.textContent = `${score}점`;
+
+  modal.classList.remove("hidden"); // 중요
   modal.classList.add("show");
 }
 
+
 // =========================
-// 💾 등록하기 (Firebase에 저장만)
+// 💾 Firebase 저장
 // =========================
 saveScoreBtn.addEventListener("click", async () => {
   const nick = nicknameInput.value.trim() || "익명";
@@ -195,33 +203,39 @@ saveScoreBtn.addEventListener("click", async () => {
       time: Date.now()
     });
 
-    // 등록만 하고, 게임은 그대로 (팝업도 그대로)
-    loadRanking();
+    loadRanking(); // 갱신
   } catch (err) {
     console.error("점수 저장 오류:", err);
-    alert("점수 저장 중 오류가 발생했습니다.");
+    alert("점수 저장 중 오류 발생!");
   }
 });
 
+
 // =========================
-// 🔁 다시하기 (새 게임 시작)
+// 🔁 다시하기
 // =========================
 retryBtn.addEventListener("click", () => {
+  modal.classList.add("hidden");
   modal.classList.remove("show");
+
   resetGame();
   startRound();
 });
 
+
 // =========================
-// ⏮ 메인으로 돌아가기
+// ⏮ 메인 화면으로
 // =========================
 goMainBtn.addEventListener("click", () => {
+  modal.classList.add("hidden");
   modal.classList.remove("show");
+
   resetGame();
 
   gameScreen.classList.add("hidden");
   mainScreen.classList.remove("hidden");
 });
+
 
 // =========================
 // ♻ 리셋
@@ -233,8 +247,9 @@ function resetGame() {
   timerBox.textContent = "남은 시간: 0초";
 }
 
+
 // =========================
-// 🏆 랭킹 불러오기 (Firebase 전체 랭킹)
+// 🏆 랭킹 불러오기
 // =========================
 async function loadRanking() {
   try {
@@ -260,11 +275,15 @@ async function loadRanking() {
         li.textContent = `${i + 1}등 - ${item.name} : ${item.score}점`;
         rankingList.appendChild(li);
       });
+
   } catch (err) {
     console.error("랭킹 로드 오류:", err);
-    rankingList.innerHTML = "<li>랭킹을 불러오는 중 오류가 발생했습니다.</li>";
+    rankingList.innerHTML = "<li>랭킹 로드 중 오류 발생</li>";
   }
 }
 
-// 처음 아이콘 동기화
+
+// =========================
+// 🔊 초기 아이콘 세팅
+// =========================
 syncMusicIcon();
