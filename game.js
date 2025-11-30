@@ -53,7 +53,7 @@ const sound2 = document.getElementById("sound2"); // 게임 종료 효과음
 // =========================
 // 🔊 사운드 제어
 // =========================
-let musicOn = true;    // 전체 사운드 ON/OFF: 기본값을 false로 변경!
+let musicOn = false;    // 전체 사운드 ON/OFF: 기본값을 false로 변경!
 
 function syncMusicIcon() {
   musicToggle.textContent = musicOn ? "🔊" : "🔇";
