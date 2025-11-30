@@ -197,3 +197,7 @@ body {
 .help-btn:hover .help-tooltip {
   display: block;
 }
+
+#timer {
+  margin-top: 20px;  
+}
