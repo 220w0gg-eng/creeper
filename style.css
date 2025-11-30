@@ -161,3 +161,39 @@ body {
     padding: 0;
 }
 
+
+
+/* ❓ 도움말 버튼 (메인 화면에서만 보임) */
+.help-btn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #444;
+  color: white;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+/* 툴팁 박스 */
+.help-tooltip {
+  display: none;
+  position: absolute;
+  top: 55px;
+  left: 0;
+  width: 260px;
+  padding: 15px;
+  background: rgba(0,0,0,0.85);
+  color: white;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #888;
+}
+
+.help-btn:hover .help-tooltip {
+  display: block;
+}
