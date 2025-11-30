@@ -202,3 +202,32 @@ body {
 #timer {
   margin-top: 20px;  
 }
+
+/* 버튼 그룹 및 버튼 스타일 */
+.btn-group {
+  display: flex;
+  flex-direction: column; /* Row(행)들이 세로로 쌓이도록 설정 */
+  gap: 10px; /* 행 간의 간격 */
+  margin-top: 30px;
+}
+
+.btn-row {
+  display: flex; /* 버튼들이 가로로 정렬되도록 설정 */
+  justify-content: center;
+  gap: 10px; /* 버튼들 간의 간격 */
+}
+
+.color-btn {
+  padding: 15px 25px;
+  /* margin은 btn-row의 gap으로 대체하여 제거 (기존 10px 유지) */
+  font-size: 22px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  width: 150px; /* 버튼 너비 고정으로 2x2 배열을 깔끔하게 만듭니다. */
+  transition: transform 0.1s;
+}
+
+.color-btn:active {
+  transform: scale(0.98);
+}
