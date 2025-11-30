@@ -5,7 +5,7 @@
   <title>색깔 구분 반응 게임</title>
   <link rel="stylesheet" href="style.css" />
 
-  <!-- 🔥 Firebase 초기화 -->
+  <!-- 🔥 Firebase 초기화 (정확한 1회만) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
     import { getDatabase } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
@@ -21,15 +21,13 @@
       measurementId: "G-SR74EEREYZ"
     };
 
-    // Firebase 실행
     window.firebaseApp = initializeApp(firebaseConfig);
     window.db = getDatabase(window.firebaseApp);
   </script>
 </head>
 
 <body>
-
-  <!-- 🔊 전역 소리 버튼 (어디서든 보이도록) -->
+  <!-- 🔊 전역 소리 버튼 -->
   <button id="music-toggle" class="music-btn">🔊</button>
 
   <!-- 메인 화면 -->
@@ -40,23 +38,18 @@
 
   <!-- 게임 화면 -->
   <div id="game-screen" class="hidden">
-
     <audio id="bgm" loop>
       <source src="bgm.mp3" type="audio/mp3">
     </audio>
 
     <div class="container">
-
-      <!-- 광고 패널 -->
       <div class="left-panel">
         <h2>광고</h2>
         <img id="ad-img" class="ad-box" src="ad1.jpg">
       </div>
 
-      <!-- 게임 본체 -->
       <div class="game-panel">
         <h1>색깔 구분 게임</h1>
-
         <div id="word-box">준비하세요...</div>
 
         <div class="btn-group">
@@ -70,23 +63,19 @@
         <div id="score">점수: 0</div>
       </div>
 
-      <!-- 랭킹 패널 -->
       <div class="right-panel">
         <h2>랭킹 TOP 10</h2>
         <ol id="ranking-list"></ol>
       </div>
-
     </div>
   </div>
 
-  <!-- 닉네임 입력 팝업 -->
+  <!-- 🔥 닉네임 팝업 (기본 hidden 유지) -->
   <div id="nickname-modal" class="modal hidden">
-
     <div class="modal-content">
       <h1 id="final-score" class="final-score">0점</h1>
       <h3>점수를 랭킹에 등록할까요?</h3>
-
-      <input type="text" id="nickname-input" placeholder="닉네임 입력" />
+      <input type="text" id="nickname-input" placeholder="닉네임 입력">
 
       <button id="save-score-btn">등록하기</button>
       <button id="retry-btn">다시하기</button>
@@ -94,8 +83,7 @@
     </div>
   </div>
 
-  <!-- JS -->
+  <!-- 🔥 game.js는 body 맨 아래에 있어야 정상 작동 -->
   <script type="module" src="game.js"></script>
-
 </body>
 </html>
