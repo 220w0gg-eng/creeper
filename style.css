@@ -92,13 +92,14 @@ body {
 
 #word-box {
   font-size: 48px;
-  margin-top: 40px;
+  margin-top: 60px;  
   margin-bottom: 20px;
   height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 
 .color-btn {
   padding: 15px 25px;
