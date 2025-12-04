@@ -95,7 +95,7 @@ musicToggle.addEventListener("click", () => {
 // =========================
 // 📺 광고 슬라이드
 // =========================
-const adList = ["ad1.jpg", "ad2.jpg", "ad3.jpg"];
+const adList = ["BaewhaAD.jpg", "Creeper.jpg", "SWBook.jpg"];
 let adIndex = 0;
 
 setInterval(() => {
