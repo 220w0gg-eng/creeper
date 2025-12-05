@@ -50,9 +50,6 @@ const sound1 = document.getElementById("sound1"); // 버튼 클릭 효과음
 const sound2 = document.getElementById("sound2"); // 게임 종료 효과음
 
 
-
-
-
 // =========================
 // 🔊 사운드 제어
 // =========================
@@ -200,16 +197,6 @@ document.querySelectorAll(".color-btn").forEach(btn => {
       endGame();
     }
   });
-});
-
-
-
-  if (targetButton) {
-    // 버튼에 매핑된 키를 누를 경우, 브라우저의 기본 동작을 막고
-    // 해당 버튼의 마우스 클릭 이벤트를 강제로 발생시킵니다.
-    event.preventDefault(); 
-    targetButton.click();
-  }
 });
 
 
