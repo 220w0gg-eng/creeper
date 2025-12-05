@@ -51,6 +51,15 @@ const sound2 = document.getElementById("sound2"); // 게임 종료 효과음
 
 
 // =========================
+// ⌨️ 키보드 입력 매핑을 위한 버튼 선택 (추가됨)
+// =========================
+const redBtn    = document.querySelector('.color-btn[data-color="red"]');
+const yellowBtn = document.querySelector('.color-btn[data-color="yellow"]');
+const greenBtn  = document.querySelector('.color-btn[data-color="green"]');
+const blueBtn   = document.querySelector('.color-btn[data-color="blue"]');
+
+
+// =========================
 // 🔊 사운드 제어
 // =========================
 let musicOn = true;    // 전체 사운드 ON/OFF: 기본값을 false로 변경!
@@ -197,6 +206,43 @@ document.querySelectorAll(".color-btn").forEach(btn => {
       endGame();
     }
   });
+});
+
+
+// =========================
+// ⌨️ 키보드 입력 처리 (추가됨)
+// =========================
+document.addEventListener("keydown", (event) => {
+  // 게임 화면이 숨겨져 있거나 (메인 화면 또는 모달이 떠 있을 때), 
+  // 점수 등록 모달이 활성화되어 있으면 키보드 입력을 무시
+  if (gameScreen.classList.contains("hidden") || modal.classList.contains("show")) {
+    return;
+  }
+
+  const key = event.key.toLowerCase();
+  let targetButton = null;
+
+  switch (key) {
+    case 'f':
+      targetButton = redBtn;     // 빨간색 버튼 (좌측 상단)
+      break;
+    case 'j':
+      targetButton = yellowBtn;  // 노란색 버튼 (우측 상단)
+      break;
+    case 'v':
+      targetButton = greenBtn;   // 초록색 버튼 (좌측 하단)
+      break;
+    case 'n':
+      targetButton = blueBtn;    // 파란색 버튼 (우측 하단)
+      break;
+  }
+
+  if (targetButton) {
+    // 버튼에 매핑된 키를 누를 경우, 브라우저의 기본 동작을 막고
+    // 해당 버튼의 마우스 클릭 이벤트를 강제로 발생시킵니다.
+    event.preventDefault(); 
+    targetButton.click();
+  }
 });
 
 
