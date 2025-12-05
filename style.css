@@ -90,6 +90,10 @@ body {
 .game-panel {
   width: 60%;
   text-align: center;
+
+  background: linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet);
+  background-size: 400%; /* 애니메이션을 위해 크기 확대 */
+  animation: rainbow 4s infinite alternate; /* 무지개 애니메이션 적용 */
 }
 
 #word-box {
