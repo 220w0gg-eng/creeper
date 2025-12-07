@@ -84,7 +84,7 @@ body {
 
 /* 광고 이미지 고정 크기 */
 .ad-box {
-  width: 220px;        /* 고정 크기 */
+  width: 300px;        /* 고정 크기 */
   height: 400px;       /* 고정 크기 */
   object-fit: cover;   /* 잘림 없이 채우기 */
   border-radius: 12px;
